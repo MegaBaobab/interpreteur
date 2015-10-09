@@ -79,3 +79,18 @@ int NoeudInstSi::executer() {
   if (m_condition->executer()) m_sequence->executer();
   return 0; // La valeur renvoyée ne représente rien !
 }
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+// NoeudTantQue
+////////////////////////////////////////////////////////////////////////////////
+
+NoeudTantQue::NoeudTantQue(Noeud* condition, Noeud* sequence)
+: m_condition(condition), m_sequence(sequence) {
+}
+
+int NoeudTantQue::executer() {
+  while (m_condition->executer()) m_sequence->executer();
+  return 0; // La valeur renvoyée ne représente rien !
+}

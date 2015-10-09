@@ -81,4 +81,18 @@ class NoeudInstSi : public Noeud {
     Noeud*  m_sequence;
 };
 
+class NoeudTantQue : public Noeud {
+// Classe pour représenter un noeud "instruction si"
+//  et ses 2 fils : la condition du si et la séquence d'instruction associée
+  public:
+    NoeudTantQue(Noeud* condition, Noeud* sequence);
+     // Construit une "instruction si" avec sa condition et sa séquence d'instruction
+   ~NoeudTantQue() {} // A cause du destructeur virtuel de la classe Noeud
+    int executer();  // Exécute l'instruction si : si condition vraie on exécute la séquence
+
+  private:
+    Noeud*  m_condition;
+    Noeud*  m_sequence;
+};
+
 #endif /* ARBREABSTRAIT_H */
