@@ -76,11 +76,23 @@ NoeudInstSi::NoeudInstSi(Noeud* condition, Noeud* sequence)
 }
 
 int NoeudInstSi::executer() {
-    int i = 0;
+    int i = 0, b=0;
     vector<NoeudInstSinonsi*> v = m_sinonsi;
   if (m_condition->executer()){
     m_sequence->executer();
-  } 
+  }else {
+      while (b=0 && i<v.size()){
+          if (v[i]->getCondition()->executer()) {
+              v[i]->getSequence()->executer();
+              b=1;
+          }else{
+              i++;
+          }
+      }
+      if (b==0 && m_sinon != nullptr){
+          m_sinon->getSequence()->executer();
+      }
+  }
  
   return 0; // La valeur renvoyée ne représente rien !
 }
@@ -104,6 +116,10 @@ NoeudInstSinon::NoeudInstSinon(Noeud* sequence)
 :m_sequence(sequence){
 }
 
+Noeud* NoeudInstSinon::getSequence() const {
+    return m_sequence;
+}
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -114,6 +130,13 @@ NoeudInstSinonsi::NoeudInstSinonsi(Noeud* condition, Noeud* sequence)
 : m_condition(condition), m_sequence(sequence){
 }
 
+Noeud* NoeudInstSinonsi::getCondition() const {
+    return m_condition;
+}
+
+Noeud* NoeudInstSinonsi::getSequence() const {
+    return m_sequence;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // NoeudTantQue
