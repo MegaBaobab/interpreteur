@@ -5,6 +5,9 @@ procedure principale()
   j=1;
   tantque (i<14)
     j=j+1;
+    si (i==13)
+      j=j-1;
+    finsi
     i=i+1;
   fintantque
 finproc

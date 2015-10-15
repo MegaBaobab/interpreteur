@@ -67,6 +67,34 @@ class NoeudOperateurBinaire : public Noeud {
 };
 
 ////////////////////////////////////////////////////////////////////////////////
+
+class NoeudInstSinonsi : public Noeud {
+// Classe pour représenter un noeud "instruction si"
+//  et ses 2 fils : la condition du si et la séquence d'instruction associée
+  public:
+    NoeudInstSinonsi(Noeud* condition, Noeud* sequence);
+     // Construit une "instruction si" avec sa condition et sa séquence d'instruction
+   ~NoeudInstSinonsi() {} // A cause du destructeur virtuel de la classe Noeud
+    //int executer();  // Exécute l'instruction si : si condition vraie on exécute la séquence
+
+  private:
+    Noeud*  m_condition;
+    Noeud*  m_sequence;
+};
+
+class NoeudInstSinon : public Noeud {
+// Classe pour représenter un noeud "instruction si"
+//  et ses 2 fils : la condition du si et la séquence d'instruction associée
+  public:
+    NoeudInstSinon(Noeud* sequence);
+     // Construit une "instruction si" avec sa condition et sa séquence d'instruction
+   ~NoeudInstSinon() {} // A cause du destructeur virtuel de la classe Noeud
+    //int executer();  // Exécute l'instruction si : si condition vraie on exécute la séquence
+
+  private:
+    Noeud*  m_sequence;
+};
+
 class NoeudInstSi : public Noeud {
 // Classe pour représenter un noeud "instruction si"
 //  et ses 2 fils : la condition du si et la séquence d'instruction associée
@@ -75,11 +103,16 @@ class NoeudInstSi : public Noeud {
      // Construit une "instruction si" avec sa condition et sa séquence d'instruction
    ~NoeudInstSi() {} // A cause du destructeur virtuel de la classe Noeud
     int executer();  // Exécute l'instruction si : si condition vraie on exécute la séquence
+    void ajouterSinonsi(NoeudInstSinonsi* sinonsi);
+    void setSinon(NoeudInstSinon* sinon);
 
   private:
     Noeud*  m_condition;
     Noeud*  m_sequence;
+    vector<NoeudInstSinonsi*> m_sinonsi;
+    NoeudInstSinon* m_sinon;
 };
+
 
 class NoeudTantQue : public Noeud {
 // Classe pour représenter un noeud "instruction si"

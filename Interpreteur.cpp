@@ -134,6 +134,14 @@ Noeud* Interpreteur::instSi() {
   testerEtAvancer("(");
   Noeud* condition = expression(); // On mémorise la condition
   testerEtAvancer(")");
+  
+  while(m_lecteur.getSymbole() == "sinonsi"){
+    testerEtAvancer("(");
+    Noeud* condition1 = expression();
+    testerEtAvancer(")");
+    Noeud* sequence = seqInst();
+  }
+  
   Noeud* sequence = seqInst();     // On mémorise la séquence d'instruction
   testerEtAvancer("finsi");
   return new NoeudInstSi(condition, sequence); // Et on renvoie un noeud Instruction Si
