@@ -1,6 +1,6 @@
-#include "Interpreteur.h"
 #include <stdlib.h>
 #include <iostream>
+#include "Interpreteur.h"
 using namespace std;
 
 Interpreteur::Interpreteur(ifstream & fichier) :
@@ -134,17 +134,29 @@ Noeud* Interpreteur::instSi() {
   testerEtAvancer("(");
   Noeud* condition = expression(); // On mémorise la condition
   testerEtAvancer(")");
+  Noeud* sequence = seqInst();
+  vector<NoeudInstSinonsi*> v_sinonsi;
+  Noeud* sequence1;
+  Noeud* condition1;
   
   while(m_lecteur.getSymbole() == "sinonsi"){
+    testerEtAvancer("sinonsi");
     testerEtAvancer("(");
-    Noeud* condition1 = expression();
+    condition1 = expression();
     testerEtAvancer(")");
-    Noeud* sequence = seqInst();
+    sequence1 = seqInst();
+    v_sinonsi.push_back(new NoeudInstSinonsi(condition1, sequence1));
   }
+  NoeudInstSi* n = new NoeudInstSi(condition, sequence, v_sinonsi);
   
-  Noeud* sequence = seqInst();     // On mémorise la séquence d'instruction
+  if (m_lecteur.getSymbole() == "sinon"){
+      testerEtAvancer("sinon");
+      Noeud* sequence2 = seqInst();
+      n->setSinon(new NoeudInstSinon(sequence2));
+  
+  }
   testerEtAvancer("finsi");
-  return new NoeudInstSi(condition, sequence); // Et on renvoie un noeud Instruction Si
+  return n;// Et on renvoie un noeud Instruction Si
 }
 
 Noeud* Interpreteur::instTantQue() {
@@ -156,4 +168,19 @@ Noeud* Interpreteur::instTantQue() {
     Noeud* sequence = seqInst();
     testerEtAvancer("fintantque");
     return new NoeudTantQue(condition, sequence);
+}
+
+Noeud* Interpreteur::lire() {
+  /*vector<Noeud*> v_variables;
+  testerEtAvancer("lire");
+  testerEtAvancer("(");
+  
+  do {
+      tester("<VARIABLE>");
+      //v_variables.push_back(m_lecteur.getSymbole());
+      m_lecteur.avancer();
+  }
+  while(m_lecteur.getSymbole() == ",");
+  testerEtAvancer(")");
+  return new NoeudLire(v_variables);*/
 }
