@@ -3,12 +3,14 @@
 procedure principale()
   i = 12;
   j=1;
-  tantque (i<14)
-    j=j+1;
-    si (i==13)
-      j=j-1;
-    finsi
-    i=i+1;
-  fintantque
+  si (i==13)
+    j=2;
+  sinonsi (i==11)
+    j=4;
+  sinonsi (i==12)
+    j=5;
+  sinon
+    j=3;
+  finsi
 finproc
 # Commentaire Final

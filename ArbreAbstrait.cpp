@@ -71,19 +71,21 @@ int NoeudOperateurBinaire::executer() {
 // NoeudInstSi
 ////////////////////////////////////////////////////////////////////////////////
 
-NoeudInstSi::NoeudInstSi(Noeud* condition, Noeud* sequence)
+NoeudInstSi::NoeudInstSi(Noeud* condition, Noeud* sequence, vector<NoeudInstSinonsi*> v)
 : m_condition(condition), m_sequence(sequence), m_sinon(nullptr) {
+    for(auto &sinonsi : v){
+        m_sinonsi.push_back(sinonsi);
+    }
 }
 
 int NoeudInstSi::executer() {
-    int i = 0, b=0;
-    vector<NoeudInstSinonsi*> v = m_sinonsi;
+  int i = 0, b=0;
   if (m_condition->executer()){
     m_sequence->executer();
   }else {
-      while (b=0 && i<v.size()){
-          if (v[i]->getCondition()->executer()) {
-              v[i]->getSequence()->executer();
+      while (b==0 && i<m_sinonsi.size()){
+          if (m_sinonsi[i]->getCondition()->executer()) {
+              m_sinonsi[i]->getSequence()->executer();
               b=1;
           }else{
               i++;
@@ -91,6 +93,7 @@ int NoeudInstSi::executer() {
       }
       if (b==0 && m_sinon != nullptr){
           m_sinon->getSequence()->executer();
+          
       }
   }
  
@@ -150,3 +153,22 @@ int NoeudTantQue::executer() {
   while (m_condition->executer()) m_sequence->executer();
   return 0; // La valeur renvoyée ne représente rien !
 }
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+// NoeudEcrire
+////////////////////////////////////////////////////////////////////////////////
+
+NoeudLire::NoeudLire(vector<Noeud *>m_variables) : 
+m_variables(m_variables){
+}
+
+int NoeudLire::executer() {
+    /*for(auto elem : m_variables){
+        int value;
+        cin >> value;
+        ((SymboleValue *)elem)->setValeur(value);
+    }*/
+}
+

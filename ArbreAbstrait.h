@@ -11,6 +11,7 @@ using namespace std;
 
 #include "Symbole.h"
 #include "Exceptions.h"
+#include "SymboleValue.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 class Noeud {
@@ -74,6 +75,9 @@ class NoeudInstSinonsi : public Noeud {
   public:
     NoeudInstSinonsi(Noeud* condition, Noeud* sequence);
      // Construit une "instruction si" avec sa condition et sa séquence d'instruction
+    Noeud* getCondition() const;
+    Noeud* getSequence() const;
+    int executer() {return 0;};
    ~NoeudInstSinonsi() {} // A cause du destructeur virtuel de la classe Noeud
     //int executer();  // Exécute l'instruction si : si condition vraie on exécute la séquence
 
@@ -88,6 +92,8 @@ class NoeudInstSinon : public Noeud {
   public:
     NoeudInstSinon(Noeud* sequence);
      // Construit une "instruction si" avec sa condition et sa séquence d'instruction
+    Noeud* getSequence() const;
+    int executer() {return 0;};
    ~NoeudInstSinon() {} // A cause du destructeur virtuel de la classe Noeud
     //int executer();  // Exécute l'instruction si : si condition vraie on exécute la séquence
 
@@ -99,7 +105,7 @@ class NoeudInstSi : public Noeud {
 // Classe pour représenter un noeud "instruction si"
 //  et ses 2 fils : la condition du si et la séquence d'instruction associée
   public:
-    NoeudInstSi(Noeud* condition, Noeud* sequence);
+    NoeudInstSi(Noeud* condition, Noeud* sequence, vector<NoeudInstSinonsi*> v);
      // Construit une "instruction si" avec sa condition et sa séquence d'instruction
    ~NoeudInstSi() {} // A cause du destructeur virtuel de la classe Noeud
     int executer();  // Exécute l'instruction si : si condition vraie on exécute la séquence
@@ -127,5 +133,23 @@ class NoeudTantQue : public Noeud {
     Noeud*  m_condition;
     Noeud*  m_sequence;
 };
+
+
+class NoeudLire : public Noeud {
+    
+    public:
+        NoeudLire(vector<Noeud *>m_variable);
+       ~NoeudLire() {}
+        int executer();
+       
+       
+    private:
+       vector<Noeud *>m_variables; 
+};
+
+
+
+
+//class NoeudEcrire : public Noeud
 
 #endif /* ARBREABSTRAIT_H */
