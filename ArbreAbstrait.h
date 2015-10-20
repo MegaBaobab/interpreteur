@@ -11,7 +11,7 @@ using namespace std;
 
 #include "Symbole.h"
 #include "Exceptions.h"
-#include "SymboleValue.h"
+//#include "SymboleValue.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 class Noeud {
@@ -147,7 +147,17 @@ class NoeudLire : public Noeud {
        vector<Noeud *>m_variables; 
 };
 
-
+class NoeudEcrire : public Noeud {
+    
+    public:
+        NoeudEcrire(vector<Noeud *>m_variable);
+       ~NoeudEcrire() {}
+        int executer();
+       
+       
+    private:
+       vector<Noeud *>m_variables; 
+};
 
 
 //class NoeudEcrire : public Noeud

@@ -3,6 +3,7 @@
 #include "Symbole.h"
 #include "SymboleValue.h"
 #include "Exceptions.h"
+#include <typeinfo>
 
 ////////////////////////////////////////////////////////////////////////////////
 // NoeudSeqInst
@@ -157,7 +158,7 @@ int NoeudTantQue::executer() {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// NoeudEcrire
+// NoeudLire
 ////////////////////////////////////////////////////////////////////////////////
 
 NoeudLire::NoeudLire(vector<Noeud *>m_variables) : 
@@ -165,10 +166,38 @@ m_variables(m_variables){
 }
 
 int NoeudLire::executer() {
-    /*for(auto elem : m_variables){
+    for(auto elem : m_variables){
         int value;
         cin >> value;
         ((SymboleValue *)elem)->setValeur(value);
-    }*/
+    }
 }
+
+
+    
+////////////////////////////////////////////////////////////////////////////////
+// NoeudEcrire
+////////////////////////////////////////////////////////////////////////////////
+
+NoeudEcrire::NoeudEcrire(vector<Noeud*> m_variable) :
+m_variables(m_variable){
+}
+
+int NoeudEcrire::executer() {
+    for(auto elem : m_variables){
+        if ( (typeid(*elem)==typeid(SymboleValue) &&  *((SymboleValue*)elem)== "<CHAINE>" )){
+            SymboleValue* s;
+            s = dynamic_cast<SymboleValue*>(elem);
+            string st = s->getChaine();
+            /*st.pop_back();
+            st++;*/
+            cout<<st;
+        }
+        else{
+            cout<<elem->executer();
+        }
+        cout<<endl;
+    }
+}
+
 

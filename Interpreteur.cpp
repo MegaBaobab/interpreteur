@@ -56,7 +56,7 @@ Noeud* Interpreteur::seqInst() {
   NoeudSeqInst* sequence = new NoeudSeqInst();
   do {
     sequence->ajoute(inst());
-  } while (m_lecteur.getSymbole() == "<VARIABLE>" || m_lecteur.getSymbole() == "si" || m_lecteur.getSymbole() == "tantque");
+  } while (m_lecteur.getSymbole() == "<VARIABLE>" || m_lecteur.getSymbole() == "si" || m_lecteur.getSymbole() == "tantque" || m_lecteur.getSymbole() == "lire" || m_lecteur.getSymbole() == "ecrire");
   // Tant que le symbole courant est un début possible d'instruction...
   // Il faut compléter cette condition chaque fois qu'on rajoute une nouvelle instruction
   return sequence;
@@ -74,6 +74,10 @@ Noeud* Interpreteur::inst() {
   // Compléter les alternatives chaque fois qu'on rajoute une nouvelle instruction
   else if (m_lecteur.getSymbole() == "tantque")
       return instTantQue();
+  else if (m_lecteur.getSymbole() == "lire")
+      return instLire();
+  else if (m_lecteur.getSymbole() == "ecrire")
+      return instEcrire();
   else erreur("Instruction incorrecte");
 }
 
@@ -170,17 +174,46 @@ Noeud* Interpreteur::instTantQue() {
     return new NoeudTantQue(condition, sequence);
 }
 
-Noeud* Interpreteur::lire() {
-  /*vector<Noeud*> v_variables;
+Noeud* Interpreteur::instLire() {
+  vector<Noeud*> v_variables;
   testerEtAvancer("lire");
   testerEtAvancer("(");
   
   do {
+      if(m_lecteur.getSymbole() == ","){
+          testerEtAvancer(",");
+      }
       tester("<VARIABLE>");
-      //v_variables.push_back(m_lecteur.getSymbole());
+      v_variables.push_back(m_table.chercheAjoute(m_lecteur.getSymbole()));
       m_lecteur.avancer();
   }
   while(m_lecteur.getSymbole() == ",");
   testerEtAvancer(")");
-  return new NoeudLire(v_variables);*/
+  testerEtAvancer(";");
+  return new NoeudLire(v_variables);
+}
+
+
+
+Noeud* Interpreteur::instEcrire() {
+  vector<Noeud*> v_variables;
+  testerEtAvancer("ecrire");
+  testerEtAvancer("(");
+  do {
+      if(m_lecteur.getSymbole() == ","){
+          m_lecteur.avancer();
+      }
+      if(m_lecteur.getSymbole() == "<VARIABLE>"){
+          v_variables.push_back(m_table.chercheAjoute(m_lecteur.getSymbole()));
+      m_lecteur.avancer();
+      }
+      else{
+          v_variables.push_back(expression());
+      }
+  }
+  while(m_lecteur.getSymbole() == ",");
+  testerEtAvancer(")");
+  testerEtAvancer(";");
+  return new NoeudEcrire(v_variables);
+  
 }
