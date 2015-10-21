@@ -135,6 +135,38 @@ class NoeudTantQue : public Noeud {
 };
 
 
+class NoeudRepeter : public Noeud {
+// Classe pour représenter un noeud "instruction repeter"
+//  et ses 2 fils : la sequence du repeter et l'expression associée
+  public:
+    NoeudRepeter(Noeud* sequence, Noeud* condition);
+     // Construit une "instruction repeter" avec sa condition et sa séquence d'instruction
+   ~NoeudRepeter() {} // A cause du destructeur virtuel de la classe Noeud
+    int executer();  // Exécute l'instruction si : si condition vraie on exécute la séquence
+
+  private:
+    Noeud*  m_condition;
+    Noeud*  m_sequence;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+class NoeudPour : public Noeud {
+// Classe pour représenter un noeud "instruction pour"
+//  et ses 2 fils : la sequence du repeter et l'expression associée
+  public:
+    NoeudPour(Noeud* affectation, Noeud* expression, Noeud* affect, Noeud* sequence);
+     // Construit une "instruction pour" avec sa condition et sa séquence d'instruction
+   ~NoeudPour() {} // A cause du destructeur virtuel de la classe Noeud
+    int executer();  // Exécute l'instruction si : si condition vraie on exécute la séquence
+
+  private:
+    Noeud*  m_affectation;
+    Noeud*  m_expression;
+    Noeud*  m_incrementation;
+    Noeud*  m_sequence;
+};
+
 class NoeudLire : public Noeud {
     
     public:

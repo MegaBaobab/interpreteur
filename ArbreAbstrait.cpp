@@ -155,7 +155,57 @@ int NoeudTantQue::executer() {
   return 0; // La valeur renvoyée ne représente rien !
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// NoeudRepeter
+////////////////////////////////////////////////////////////////////////////////
 
+NoeudRepeter::NoeudRepeter(Noeud* sequence, Noeud* condition) : 
+ m_sequence(sequence),m_condition(condition) {
+}
+
+int NoeudRepeter::executer() {
+    do {
+        m_sequence->executer();
+    }
+    while (!m_condition->executer());
+  return 0; // La valeur renvoyée ne représente rien !
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// NoeudPour
+////////////////////////////////////////////////////////////////////////////////
+
+NoeudPour::NoeudPour(Noeud* affectation, Noeud* expression, Noeud* affecta, Noeud* sequence) : 
+ m_affectation(affectation),m_expression(expression),m_incrementation(affecta), m_sequence(sequence) {
+}
+
+int NoeudPour::executer() {
+    if(this->m_affectation != nullptr){
+        if(this->m_incrementation != nullptr){
+            for(m_affectation->executer();m_expression->executer();m_incrementation->executer()){
+                m_sequence->executer();
+            }
+        }
+        else{
+            for(m_affectation->executer();m_expression->executer();){
+                m_sequence->executer();
+            }
+        }
+    }
+    else{
+        if(this->m_incrementation != nullptr){
+            for(m_affectation->executer();m_expression->executer();m_incrementation->executer()){
+                m_sequence->executer();
+            }
+        }
+        else{
+            for(m_affectation->executer();m_expression->executer();){
+                m_sequence->executer();
+            }
+        }
+    }
+  return 0; // La valeur renvoyée ne représente rien !
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // NoeudLire
@@ -189,8 +239,8 @@ int NoeudEcrire::executer() {
             SymboleValue* s;
             s = dynamic_cast<SymboleValue*>(elem);
             string st = s->getChaine();
-            /*st.pop_back();
-            st++;*/
+            st.erase(0,1);
+            st.pop_back();
             cout<<st;
         }
         else{

@@ -2,7 +2,9 @@
 # Les lignes de commentaires commencent par #
 procedure principale()
   b=2;
-  a=1;
-  ecrire(1+b);
+  a=1
+  si(a=2)
+  d=1;
+  e=1
 finproc
 # Commentaire Final
