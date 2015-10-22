@@ -60,7 +60,7 @@ Noeud* Interpreteur::seqInst() {
   NoeudSeqInst* sequence = new NoeudSeqInst();
   do {
     sequence->ajoute(inst());
-  } while (m_lecteur.getSymbole() == "<VARIABLE>" || m_lecteur.getSymbole() == "si" || m_lecteur.getSymbole() == "tantque" || m_lecteur.getSymbole() == "lire" || m_lecteur.getSymbole() == "ecrire");
+  } while (m_lecteur.getSymbole() == "<VARIABLE>" || m_lecteur.getSymbole() == "si" || m_lecteur.getSymbole() == "tantque" || m_lecteur.getSymbole() == "lire" || m_lecteur.getSymbole() == "ecrire"|| m_lecteur.getSymbole() == "repeter" || m_lecteur.getSymbole() == "pour");
   // Tant que le symbole courant est un début possible d'instruction...
   // Il faut compléter cette condition chaque fois qu'on rajoute une nouvelle instruction
   return sequence;
@@ -83,12 +83,16 @@ Noeud* Interpreteur::inst() {
             return instLire();
         else if (m_lecteur.getSymbole() == "ecrire")
             return instEcrire();
+        else if (m_lecteur.getSymbole() == "repeter")
+            return instRepeter();
+        else if (m_lecteur.getSymbole() == "pour")
+            return instPour();
         else erreur("Instruction incorrecte");
     }
     catch (InterpreteurException &e){
         cout << e.what() <<endl;
         err = 1;
-        while (m_lecteur.getSymbole() != "<VARIABLE>" && m_lecteur.getSymbole() != "si" && m_lecteur.getSymbole() != "tantque" && m_lecteur.getSymbole() != "lire" && m_lecteur.getSymbole() != "ecrire"){
+        while (m_lecteur.getSymbole() != "<VARIABLE>" && m_lecteur.getSymbole() != "si" && m_lecteur.getSymbole() != "tantque" && m_lecteur.getSymbole() != "lire" && m_lecteur.getSymbole() != "ecrire" && m_lecteur.getSymbole() != "finproc" && m_lecteur.getSymbole() != "pour" && m_lecteur.getSymbole() != "repeter"){
             m_lecteur.avancer();
         }
     }

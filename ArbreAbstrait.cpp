@@ -22,6 +22,11 @@ void NoeudSeqInst::ajoute(Noeud* instruction) {
   if (instruction!=nullptr) m_instructions.push_back(instruction);
 }
 
+void NoeudSeqInst::traduireEnCPP(ostream& cout, unsigned int indentation) const {
+
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////
 // NoeudAffectation
 ////////////////////////////////////////////////////////////////////////////////
@@ -35,6 +40,13 @@ int NoeudAffectation::executer() {
   ((SymboleValue*) m_variable)->setValeur(valeur); // On affecte la variable
   return 0; // La valeur renvoyée ne représente rien !
 }
+
+void NoeudAffectation::traduireEnCPP(ostream& cout, unsigned int indentation) const {
+    m_variable->traduireEnCPP(cout, indentation);
+    cout << " = ";
+    m_expression->traduireEnCPP(cout, indentation);
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // NoeudOperateurBinaire
@@ -67,6 +79,11 @@ int NoeudOperateurBinaire::executer() {
   }
   return valeur; // On retourne la valeur calculée
 }
+
+void NoeudOperateurBinaire::traduireEnCPP(ostream& cout, unsigned int indentation) const {
+
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // NoeudInstSi
@@ -111,6 +128,10 @@ void NoeudInstSi::setSinon(NoeudInstSinon* sinon) {
     m_sinon=sinon;
 }
 
+void NoeudInstSi::traduireEnCPP(ostream& cout, unsigned int indentation) const {
+
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // NoeudInstSinon
@@ -124,6 +145,9 @@ Noeud* NoeudInstSinon::getSequence() const {
     return m_sequence;
 }
 
+void NoeudInstSinon::traduireEnCPP(ostream& cout, unsigned int indentation) const {
+
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -142,6 +166,11 @@ Noeud* NoeudInstSinonsi::getSequence() const {
     return m_sequence;
 }
 
+void NoeudInstSinonsi::traduireEnCPP(ostream& cout, unsigned int indentation) const {
+
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////
 // NoeudTantQue
 ////////////////////////////////////////////////////////////////////////////////
@@ -154,6 +183,15 @@ int NoeudTantQue::executer() {
   while (m_condition->executer()) m_sequence->executer();
   return 0; // La valeur renvoyée ne représente rien !
 }
+
+void NoeudTantQue::traduireEnCPP(ostream& cout, unsigned int indentation) const {
+    cout << setw(4*indentation)<< "" << "while (";
+    m_condition->traduireEnCPP(cout, 0);
+    cout << ") {"<< endl;
+    m_sequence->traduireEnCPP(cout, indentation + 1);
+    cout<<endl << setw(4*indentation) << ""  <<"}";
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // NoeudRepeter
@@ -170,6 +208,11 @@ int NoeudRepeter::executer() {
     while (!m_condition->executer());
   return 0; // La valeur renvoyée ne représente rien !
 }
+
+void NoeudRepeter::traduireEnCPP(ostream& cout, unsigned int indentation) const {
+
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // NoeudPour
@@ -207,6 +250,11 @@ int NoeudPour::executer() {
   return 0; // La valeur renvoyée ne représente rien !
 }
 
+void NoeudPour::traduireEnCPP(ostream& cout, unsigned int indentation) const {
+
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////
 // NoeudLire
 ////////////////////////////////////////////////////////////////////////////////
@@ -221,6 +269,10 @@ int NoeudLire::executer() {
         cin >> value;
         ((SymboleValue *)elem)->setValeur(value);
     }
+}
+
+void NoeudLire::traduireEnCPP(ostream& cout, unsigned int indentation) const {
+
 }
 
 
@@ -250,4 +302,7 @@ int NoeudEcrire::executer() {
     }
 }
 
+void NoeudEcrire::traduireEnCPP(ostream& cout, unsigned int indentation) const {
+
+}
 
