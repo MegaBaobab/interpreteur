@@ -25,11 +25,6 @@ ostream & operator<<(ostream & cout, const SymboleValue & symbole) {
 }
 
 void SymboleValue::traduireEnCPP(ostream& cout, unsigned int indentation) const {
-    if(*this == "<VARIABLE>"){
-        cout << setw(indentation) << "" << m_valeur;
-    }
-    else {
-        cout << setw(indentation) << "" << this->getChaine();
-    }
+    cout << setw(4*indentation) << "" << this->getChaine();
 }
 

@@ -274,3 +274,16 @@ Noeud* Interpreteur::instEcrire() {
   return new NoeudEcrire(v_variables);
   
 }
+
+void Interpreteur::traduireEnCPP(ostream& cout, unsigned int indentation) const {
+    cout << setw(4*indentation) << "" << "int main() {"<< endl;
+    for(int i=0;i<m_table.getTaille();i++){
+        if(m_table[i] == "<VARIABLE>"){
+           cout << setw(4*(indentation + 1)) << "" << "int "<< m_table[i].getChaine()<< ";" << endl; 
+        }
+    }
+    getArbre()->traduireEnCPP(cout, indentation + 1);
+    cout << setw(4*(indentation + 1)) << "" << "return 0;" << endl;
+    cout << setw(indentation) << "}" << endl;
+}
+

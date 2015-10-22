@@ -2,5 +2,11 @@
 # Les lignes de commentaires commencent par #
 procedure principale()
   j=2;
+  pour(i=0;i<2;i=i+1)
+    j=j+1;
+  finpour
+  tantque(i<=5)
+    i=i+1;
+  fintantque
 finproc
 # Commentaire Final
